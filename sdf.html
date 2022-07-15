@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+ <table width="28%" border="0" align="center">
+  <tr>
+    <td align="center">Search Type 
+    <select id="search_type">
+    <option value="0">Type</option>
+    <option value="Course_Wise">Course Wise</option>
+    <option value="Date_Wise">Date Wise</option>
+    </select></td>
+  </tr>
+  <tr>
+    <td align="center">
+<table width="100%" border="0" id="date_type" style="display:none;margin-top: 10px;">
+  <tr>
+    <td>From-<input type="date" id="date1"> </td>
+     <td> To-<input type="date" id="date2"></td>
+      <td><input type="button" id="date_type_btn" value="Search"></td>
+  </tr>
+</table>
+<table width="100%" border="0" id="course_type" style="display:none;margin-top: 10px;">
+  <tr>
+    <td align="center">
+    <select id="course">
+    <option value="0">Select Course</option>
+<option value="ok">ok</option>
+
+    </select></td>
+  </tr>
+</table>
+
+    
+    </td>
+  </tr>
+</table>
+
+<div id="sholarshpi_tbl_view"></div>
+
+<script type="text/javascript">
+$( "#search_type" ).change(function() {
+var type = this.value;
+		if(type=="0"){
+			$("#date_type").css('display','none');
+			$("#course_type").css('display','none');
+			alert("Please Select Type");exit;
+		}else if(type=="Course_Wise"){
+			$("#course_type").css('display','block');
+			$("#date_type").css('display','none');
+		}else if(type=="Date_Wise"){
+			$("#course_type").css('display','none');
+			$("#date_type").css('display','block');
+		}
+});
+
+$( "#course" ).change(function() {
+	var course = this.value;
+	if(course=="0"){
+		alert("Please Select Course");exit;
+		}else{
+	$("#sholarshpi_tbl_view").html("<h3 style='text-align: center; border-bottom: 0px;'><img src='images/Hourglass.gif'  style='width: 70px;'/> <br>Loading... Please Wait..</h3>");		
+	$.ajax({url: "scholar_course_view.php?course="+course, 
+			success: function(result){
+    $("#sholarshpi_tbl_view").html(result);
+  }});
+		}
+});	
+
+$( "#date_type_btn" ).click(function() {
+	var date1 = $("#date1").val();
+	var date2 = $("#date2").val();
+	if(date1==""){
+		alert("Please Select Date From");exit;
+		} else if(date2==""){
+			alert("Please Select Date To");exit;
+        } else{
+$("#sholarshpi_tbl_view").html("<h3 style='text-align: center; border-bottom: 0px;'><img src='images/Hourglass.gif'  style='width: 70px;'/> <br>Loading... Please Wait..</h3>");		
+	$.ajax({url: "scholar_date_view.php?date1="+date1+"&date2="+date2, 
+			success: function(result){
+    $("#sholarshpi_tbl_view").html(result);
+  }});
+  }
+});		
+</script>
+</body>
+</html>
